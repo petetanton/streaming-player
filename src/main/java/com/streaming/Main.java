@@ -1,13 +1,12 @@
 package com.streaming;
 
 import com.streaming.handler.PlayerHttpHandler;
-import org.apache.http.protocol.HTTP;
 import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
 
 import java.util.concurrent.CountDownLatch;
 
-public class Main {
+class Main {
 
     private static final Logger LOG = Logger.getLogger(Main.class);
 
