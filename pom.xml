@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>streaming-player-generator</groupId>
+    <artifactId>streaming-player-generator</artifactId>
+    <version>0.0.1</version>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.glassfish.grizzly</groupId>
+            <artifactId>grizzly-http-server</artifactId>
+            <version>2.3.24</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.12</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-dynamodb</artifactId>
+            <version>1.10.27</version>
+        </dependency>
+
+        <!-- Test stuff-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.5</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>streaming-player-${version}</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.streaming.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.streaming.Main</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.dstovall</groupId>
+                <artifactId>onejar-maven-plugin</artifactId>
+                <version>1.4.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>one-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>rpm-maven-plugin</artifactId>
+                <version>2.1.5</version>
+                <executions>
+                    <execution>
+                        <id>generate-rpm</id>
+                        <goals>
+                            <goal>rpm</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <sourceEncoding>UTF-8</sourceEncoding>
+                    <license>internal</license>
+                    <distribution>SR Streaming Player Generator</distribution>
+                    <group>Application/WebApps</group>
+                    <targetVendor>tanton</targetVendor>
+                    <needarch>noarch</needarch>
+                    <targetOS>Linux</targetOS>
+
+                    <mappings>
+                        <mapping>
+                            <directory>/etc/sr-lbp/streaming-player</directory>
+                            <sources>
+                                <source>
+                                    <location>target/streaming-player-${project.version}.one-jar.jar</location>
+                                </source>
+                                <source>
+                                    <location>src/main/scripts/streaming-player</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/etc/sr-lbp</directory>
+                            <filemode>777</filemode>
+                            <username>ec2-user</username>
+                        </mapping>
+                    </mappings>
+                    <!--<preinstallScriptlet>-->
+                    <!--<scriptFile>src/main/scripts/pre_install.sh</scriptFile>-->
+                    <!--<fileEncoding>utf-8</fileEncoding>-->
+                    <!--</preinstallScriptlet>-->
+                    <postinstallScriptlet>
+                        <scriptFile>src/main/scripts/post_install.sh</scriptFile>
+                        <fileEncoding>utf-8</fileEncoding>
+                    </postinstallScriptlet>
+                    <requires>
+                        <require>java-1.8.0-openjdk-devel</require>
+                    </requires>
+                </configuration>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>rpm-maven-plugin</artifactId>
+                    <version>2.1.5</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>onejar-maven-plugin.googlecode.com</id>
+            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+</project>
