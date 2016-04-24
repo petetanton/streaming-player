@@ -6,8 +6,10 @@
 
     <groupId>streaming-player-generator</groupId>
     <artifactId>streaming-player-generator</artifactId>
-    <version>0.0.1</version>
-
+    <version>0.0.1-SNAPSHOT</version>
+    <scm>
+        <developerConnection>scm:git:https://github.com/petetanton/streaming-player.git</developerConnection>
+    </scm>
 
     <dependencies>
         <dependency>
@@ -146,7 +148,7 @@
                                     <location>target/streaming-player-${project.version}.one-jar.jar</location>
                                 </source>
                                 <source>
-                                    <location>src/main/scripts/streaming-player</location>
+                                    <location>src/main/scripts/streaming-player-service-wrapper.sh</location>
                                 </source>
                             </sources>
                         </mapping>
@@ -164,6 +166,14 @@
                         <require>java-1.8.0-openjdk-devel</require>
                         <require>httpd</require>
                     </requires>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
                 </configuration>
             </plugin>
         </plugins>
