@@ -156,16 +156,13 @@
                             <username>ec2-user</username>
                         </mapping>
                     </mappings>
-                    <!--<preinstallScriptlet>-->
-                    <!--<scriptFile>src/main/scripts/pre_install.sh</scriptFile>-->
-                    <!--<fileEncoding>utf-8</fileEncoding>-->
-                    <!--</preinstallScriptlet>-->
                     <postinstallScriptlet>
                         <scriptFile>src/main/scripts/post_install.sh</scriptFile>
                         <fileEncoding>utf-8</fileEncoding>
                     </postinstallScriptlet>
                     <requires>
                         <require>java-1.8.0-openjdk-devel</require>
+                        <require>httpd</require>
                     </requires>
                 </configuration>
             </plugin>
