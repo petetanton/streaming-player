@@ -156,6 +156,14 @@
                             <filemode>777</filemode>
                             <username>ec2-user</username>
                         </mapping>
+                        <mapping>
+                            <directory>/etc/httpd/conf</directory>
+                            <sources>
+                                <source>
+                                    <location>bake-scripts/etc/httpd/conf/httpd.conf</location>
+                                </source>
+                            </sources>
+                        </mapping>
                     </mappings>
                     <postinstallScriptlet>
                         <scriptFile>src/main/scripts/post_install.sh</scriptFile>
