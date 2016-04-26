@@ -6,7 +6,7 @@ import org.glassfish.grizzly.http.server.HttpServer;
 
 import java.util.concurrent.CountDownLatch;
 
-class Main {
+public class Main {
 
     private static final Logger LOG = Logger.getLogger(Main.class);
 

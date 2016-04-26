@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 SERVICE_NAME=streaming-player
-PATH_TO_JAR=/etc/sr-lbp/streaming-player/streaming-player-0.0.1.one-jar.jar
+PATH_TO_JAR=/etc/sr-lbp/streaming-player/streaming-player-*.one-jar.jar
 PID_PATH_NAME=/tmp/sr-sp
 case $1 in
     start)
