@@ -23,15 +23,16 @@ public class SRApiClient {
                 .setParameter("id", String.valueOf(streamId));
         final URI uri = uriBuilder.build();
         System.out.println(uri.toString());
-        HttpGet apiGetRequest = new HttpGet(uri);
-        apiGetRequest.setHeader("Accept", "application/json");
+        HttpGet request = new HttpGet(uri);
+        request.setHeader("Accept", "application/json");
+        request.setHeader("User-Agent", "streaming-player");
         HttpClient client = HttpUtils.buildClient();
-        final HttpResponse apiResponse = client.execute(apiGetRequest);
+        final HttpResponse response = client.execute(request);
 
-        if (apiResponse.getStatusLine().getStatusCode() != 200) {
-            throw new Exception(apiResponse.getStatusLine().getReasonPhrase());
+        if (response.getStatusLine().getStatusCode() != 200) {
+            throw new Exception(response.getStatusLine().getReasonPhrase());
         }
-        final InputStream is = apiResponse.getEntity().getContent();
+        final InputStream is = response.getEntity().getContent();
         final Stream stream;
         try {
             ObjectMapper mapper = new ObjectMapper();
