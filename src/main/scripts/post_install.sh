@@ -5,3 +5,7 @@ sudo service httpd stop
 sudo service streaming-player stop
 sudo service streaming-player start
 sudo service httpd start
+sudo chkconfig --add httpd
+sudo chkconfig httpd on
+sudo chkconfig --add streaming-player
+sudo chkconfig streaming-player on
