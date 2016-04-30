@@ -166,7 +166,7 @@
                     </postinstallScriptlet>
                     <requires>
                         <require>java-1.8.0-openjdk-devel</require>
-                        <require>httpd</require>
+                        <require>httpd24</require>
                     </requires>
                 </configuration>
             </plugin>
