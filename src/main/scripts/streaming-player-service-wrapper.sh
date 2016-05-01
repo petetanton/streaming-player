@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# chkconfig: 2 99 01
+# description: Streaming player service
 SERVICE_NAME=streaming-player
 PATH_TO_JAR=/etc/sr-lbp/streaming-player/streaming-player-*.one-jar.jar
 PID_PATH_NAME=/tmp/sr-sp
