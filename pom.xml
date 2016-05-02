@@ -152,6 +152,9 @@
                                 <source>
                                     <location>bake-scripts/etc/httpd/conf/httpd.conf</location>
                                 </source>
+                                <source>
+                                    <location>bake-scripts/etc/varnish/default.vcl</location>
+                                </source>
                             </sources>
                         </mapping>
                         <mapping>
@@ -167,6 +170,7 @@
                     <requires>
                         <require>java-1.8.0-openjdk-devel</require>
                         <require>httpd24</require>
+                        <require>varnish.x86_64</require>
                     </requires>
                 </configuration>
             </plugin>
