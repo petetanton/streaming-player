@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+git push
 rm pom.xml.releaseBackup
 rm release.properties
 mvn clean
