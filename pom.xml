@@ -4,10 +4,10 @@
 
     <groupId>streaming-player-generator</groupId>
     <artifactId>streaming-player-generator</artifactId>
-    <version>0.0.12</version>
+    <version>0.0.13-SNAPSHOT</version>
     <scm>
         <developerConnection>scm:git:git@github.com:petetanton/streaming-player.git</developerConnection>
-      <tag>v0.0.12</tag>
+      <tag>v0.0.1</tag>
   </scm>
 
     <dependencies>
