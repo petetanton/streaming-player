@@ -10,9 +10,6 @@ public class CacheControl {
 
     public static String calculateCacheHeader(Stream stream) {
         final long ttl = (stream.getStartTime().getMillis() - DateTime.now().getMillis()) / 1000;
-        if (ttl < 1) {
-            return "no-cache";
-        }
         if (stream.getStartTime().isBeforeNow()) {
             return "public, max-age=" + MAX_AGE + ", s-maxage=" + MAX_SHARED_AGE;
         } else {

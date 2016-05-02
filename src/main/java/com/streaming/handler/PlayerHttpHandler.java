@@ -10,6 +10,7 @@ import org.glassfish.grizzly.http.server.Response;
 import org.glassfish.grizzly.http.util.HttpStatus;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class PlayerHttpHandler extends HttpHandler {
 
@@ -93,6 +94,7 @@ public class PlayerHttpHandler extends HttpHandler {
         sb.append("</html>");
 
         response.setHeader("Cache-Control", CacheControl.calculateCacheHeader(stream));
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.getWriter().write(sb.toString());
     }
 
