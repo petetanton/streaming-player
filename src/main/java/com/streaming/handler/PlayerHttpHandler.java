@@ -1,6 +1,7 @@
 package com.streaming.handler;
 
 import com.amazonaws.util.StringUtils;
+import com.streaming.CacheControl;
 import com.streaming.SRApiClient;
 import com.streaming.domain.Stream;
 import org.glassfish.grizzly.http.server.HttpHandler;
@@ -91,6 +92,7 @@ public class PlayerHttpHandler extends HttpHandler {
         sb.append("</body>");
         sb.append("</html>");
 
+        response.setHeader("Cache-Control", CacheControl.calculateCacheHeader(stream));
         response.getWriter().write(sb.toString());
     }
 
