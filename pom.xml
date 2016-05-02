@@ -170,7 +170,7 @@
                     <requires>
                         <require>java-1.8.0-openjdk-devel</require>
                         <require>httpd24</require>
-                        <require>varnish.x86_64</require>
+                        <require>varnish</require>
                     </requires>
                 </configuration>
             </plugin>
