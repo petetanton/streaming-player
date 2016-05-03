@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 sudo cp /etc/sr-lbp/streaming-player/streaming-player-service-wrapper.sh /etc/init.d/streaming-player
 sudo cp /etc/sr-lbp/streaming-player/httpd.conf /etc/httpd/conf/httpd.conf
-sudo cp /etc/sr-lbp/streaming-player/default.vcl /etc/varnish/default/vcl
+sudo cp /etc/sr-lbp/streaming-player/default.vcl /etc/varnish/default.vcl
 sudo chmod +x /etc/init.d/streaming-player
 sudo service httpd stop
 sudo service varnish stop
