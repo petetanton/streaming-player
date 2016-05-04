@@ -18,23 +18,10 @@ public class CacheControl {
     }
 
     private static int getMaxAge(long ttl) {
-        if (ttl * 0.8 < MAX_AGE)
-            return (int) Math.round(ttl * 0.8);
-        else
-            return MAX_AGE;
+        return Math.min((int) Math.round(ttl * 0.8), MAX_AGE);
     }
 
     private static int getSMaxAge(long ttl) {
-        if (ttl * 0.8 < MAX_SHARED_AGE)
-            return (int) Math.round(ttl * 0.8);
-        else
-            return MAX_SHARED_AGE;
+        return Math.min((int) Math.round(ttl * 0.8), MAX_SHARED_AGE);
     }
-
-
 }
-
-
-//Expires: Mon, 29 Apr 2013 21:44:55 GMT
-//        Cache-Control: max-age=0, no-cache, no-store
-//        Pragma: no-cache
