@@ -1,9 +1,11 @@
 package com.streaming.handler;
 
 import com.amazonaws.util.StringUtils;
+import com.streaming.Args;
 import com.streaming.CacheControl;
 import com.streaming.SRApiClient;
 import com.streaming.domain.Stream;
+import com.streaming.http.HttpUtils;
 import org.glassfish.grizzly.http.server.HttpHandler;
 import org.glassfish.grizzly.http.server.Request;
 import org.glassfish.grizzly.http.server.Response;
@@ -13,6 +15,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class PlayerHttpHandler extends HttpHandler {
+
+    private final Args args;
+    public PlayerHttpHandler(final Args args) {
+        this.args = args;
+    }
 
     @Override
     public void service(Request request, Response response) throws Exception {
@@ -36,7 +43,7 @@ public class PlayerHttpHandler extends HttpHandler {
         }
 
         try {
-            stream = SRApiClient.getStream(Integer.parseInt(streamId));
+            stream = SRApiClient.getStream(Integer.parseInt(streamId), args, HttpUtils.buildClient());
         } catch (NumberFormatException e) {
             sendError(response, sb, "Please set id to a valid number", HttpStatus.BAD_REQUEST_400);
             return;
