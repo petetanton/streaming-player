@@ -5,8 +5,8 @@ import org.joda.time.DateTime;
 
 public class CacheControl {
 
-    private static int MAX_AGE = 900;
-    private static int MAX_SHARED_AGE = 300;
+    private static final int MAX_AGE = 900;
+    private static final int MAX_SHARED_AGE = 300;
 
     public static String calculateCacheHeader(Stream stream) {
         final long ttl = (stream.getStartTime().getMillis() - DateTime.now().getMillis()) / 1000;
