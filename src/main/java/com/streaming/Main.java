@@ -3,8 +3,6 @@ package com.streaming;
 import com.streaming.handler.PlayerHttpHandler;
 import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
-import org.kohsuke.args4j.CmdLineException;
-import org.kohsuke.args4j.CmdLineParser;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -14,22 +12,18 @@ public class Main {
 
 
     public static void main(String[] inputArgs) {
-        final Args args = new Args();
-        CmdLineParser cmdLineParser = new CmdLineParser(args);
         try {
-            cmdLineParser.parseArgument(inputArgs);
-            start(args);
-        } catch (CmdLineException e) {
+            start();
+        } catch (Exception e) {
             System.err.println(e.getMessage());
             System.exit(2);
         }
 
     }
 
-    private static void start(Args args) {
-        System.out.println(args.getPlatformApi());
+    private static void start() {
         HttpServer server = HttpServer.createSimpleServer();
-        server.getServerConfiguration().addHttpHandler(new PlayerHttpHandler(args), "/player");
+        server.getServerConfiguration().addHttpHandler(new PlayerHttpHandler(), "/player");
 
         try {
             server.start();
