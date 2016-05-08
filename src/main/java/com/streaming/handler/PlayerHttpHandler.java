@@ -93,11 +93,6 @@ public class PlayerHttpHandler extends HttpHandler {
 
         sb.append("});");
         sb.append("</script>");
-        sb.append("<a href=\"");
-        sb.append(streamManifestUrl);
-        sb.append("\">");
-        sb.append(streamManifestUrl);
-        sb.append("</a>");
         sb.append("<script>\n" +
                 "\n" +
                 "\n" +
@@ -132,6 +127,7 @@ public class PlayerHttpHandler extends HttpHandler {
         sb.append("</html>");
 
         response.setHeader("Cache-Control", CacheControl.calculateCacheHeader(stream));
+        response.setHeader("X-Manifest-Location", streamManifestUrl);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.getWriter().write(sb.toString());
     }
