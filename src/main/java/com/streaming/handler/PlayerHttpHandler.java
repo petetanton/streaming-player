@@ -2,9 +2,13 @@ package com.streaming.handler;
 
 import com.amazonaws.util.StringUtils;
 import com.streaming.CacheControl;
+import com.streaming.HLSManifestClient;
+import com.streaming.PlayerException;
 import com.streaming.SRApiClient;
+import com.streaming.domain.HLSManifest;
 import com.streaming.domain.Stream;
 import com.streaming.http.HttpUtils;
+import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpHandler;
 import org.glassfish.grizzly.http.server.Request;
 import org.glassfish.grizzly.http.server.Response;
@@ -12,9 +16,13 @@ import org.glassfish.grizzly.http.util.HttpStatus;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 
 public class PlayerHttpHandler extends HttpHandler {
 
+    private static final Logger LOG = Logger.getLogger(PlayerHttpHandler.class);
     @Override
     public void service(Request request, Response response) throws Exception {
         response.setHeader("Content-Type", "text/html");
@@ -62,6 +70,8 @@ public class PlayerHttpHandler extends HttpHandler {
             return;
         }
 
+
+
         sb.append("<div id=\"player\" style=\"width:640px; height=360px;\"></div>\n");
         sb.append("<script>\n");
         sb.append("var player = new Clappr.Player({source: \"");
@@ -71,7 +81,17 @@ public class PlayerHttpHandler extends HttpHandler {
         sb.append(stream.getStreamId());
         sb.append("', plugins: {");
         sb.append("'core': [LevelSelector]");
-        sb.append("}});");
+        sb.append("},");
+
+        final HLSManifest hlsManifest;
+        try {
+            hlsManifest = HLSManifestClient.getHLSManifest(streamManifestUrl, HttpUtils.buildClient());
+            sb.append(hlsManifest.generateClapprSelectorConfig());
+        } catch (PlayerException e) {
+            LOG.error("Could not parse the Manifest", e);
+        }
+
+        sb.append("});");
         sb.append("</script>");
         sb.append("<a href=\"");
         sb.append(streamManifestUrl);
