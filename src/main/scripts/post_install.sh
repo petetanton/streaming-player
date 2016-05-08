@@ -6,7 +6,6 @@ sudo chmod +x /etc/init.d/streaming-player
 sudo service httpd stop
 sudo service varnish stop
 sudo service streaming-player stop
-sudo service streaming-player start
 sudo service varnish start
 sudo service httpd start
 sudo chkconfig --add httpd
@@ -15,3 +14,5 @@ sudo chkconfig --add streaming-player
 sudo chkconfig streaming-player on
 sudo chkconfig --add varnish
 sudo chkconfig varnish on
+sleep 5
+sudo service streaming-player start
