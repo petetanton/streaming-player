@@ -114,14 +114,14 @@ public class PlayerHttpHandler extends HttpHandler {
                 "</script>\n");
 
         sb.append("<script>\nfunction resizePlayer(){\n" +
-                "    var aspectRatio = 9/16,\n" +
-                "    newWidth = document.getElementById('player').parentElement.offsetWidth,\n" +
-                "    newHeight = 2 * Math.round(newWidth * aspectRatio/2);\n" +
-                "    player.resize({width: newWidth, height: newHeight});\n" +
-                "  }\n" +
+                "\tvar aspectRatio = 9/16;\n" +
+                "\tnewWidth = document.getElementById('player').parentElement.offsetWidth;\n" +
+                "\tnewHeight = 2 * Math.round(newWidth * aspectRatio/2);\n" +
+                "\tplayer.resize({width: newWidth, height: newHeight});\n" +
+                "}\n" +
                 "\n" +
-                "  resizePlayer();\n" +
-                "  window.onresize = resizePlayer; </script>");
+                "resizePlayer();\n" +
+                "window.onresize = resizePlayer;\n</script>\n");
 
         sb.append("</body>");
         sb.append("</html>");
