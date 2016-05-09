@@ -76,7 +76,7 @@ public class PlayerHttpHandler extends HttpHandler {
         sb.append("<script>\n");
         sb.append("var player = new Clappr.Player({source: \"");
         sb.append(streamManifestUrl);
-        sb.append("\", maxBufferLength:240, useDvrControls: true, parentId: \"#player\", mediacontrol: {seekbar: \"#66B2FF\", buttons: \"#00000\"}, gaAccount: 'UA-73120346-1',\n" +
+        sb.append("\", maxBufferLength:240, useDvrControls: true, parentId: \"#player\", mediacontrol: {seekbar: \"#66B2FF\", buttons: \"#ffffff\"}, gaAccount: 'UA-73120346-1',\n" +
                 "    gaTrackerName: 'streamingrocket-player-");
         sb.append(stream.getStreamId());
         sb.append("', plugins: {");
