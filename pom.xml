@@ -173,7 +173,6 @@
                         <require>java-1.8.0-openjdk-devel</require>
                         <require>httpd24</require>
                         <require>varnish</require>
-                        <require>td-agent</require>
                     </requires>
                 </configuration>
             </plugin>
