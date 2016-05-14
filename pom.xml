@@ -150,6 +150,9 @@
                                 <source>
                                     <location>bake-scripts/etc/varnish/default.vcl</location>
                                 </source>
+                                <source>
+                                    <location>bake-scripts/etc/td-agent/td-agent.conf</location>
+                                </source>
                             </sources>
                         </mapping>
                         <mapping>
@@ -162,10 +165,15 @@
                         <scriptFile>src/main/scripts/post_install.sh</scriptFile>
                         <fileEncoding>utf-8</fileEncoding>
                     </postinstallScriptlet>
+                    <preinstallScriptlet>
+                        <scriptFile>src/main/scripts/pre_install.sh</scriptFile>
+                        <fileEncoding>utf-8</fileEncoding>
+                    </preinstallScriptlet>
                     <requires>
                         <require>java-1.8.0-openjdk-devel</require>
                         <require>httpd24</require>
                         <require>varnish</require>
+                        <require>td-agent</require>
                     </requires>
                 </configuration>
             </plugin>
