@@ -15,6 +15,7 @@ aws s3 cp s3://sr-ssl-config/player.streamingrocket.co.uk/player.streamingrocket
 aws s3 cp s3://sr-ssl-config/player.streamingrocket.co.uk/player.streamingrocket.co.uk.key /opt/certs/player.streamingrocket.co.uk.key
 cd /opt/certs
 unzip ApacheServer.zip
+sudo mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.backup
 
 
 
