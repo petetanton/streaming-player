@@ -172,6 +172,7 @@
                     <requires>
                         <require>java-1.8.0-openjdk-devel</require>
                         <require>httpd24</require>
+                        <require>mod24_ssl</require>
                         <require>varnish</require>
                     </requires>
                 </configuration>
