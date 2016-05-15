@@ -1,9 +1,22 @@
 #!/usr/bin/env bash
+#Putting stuff in the right place
 sudo cp /etc/sr-lbp/streaming-player/streaming-player-service-wrapper.sh /etc/init.d/streaming-player
 sudo cp /etc/sr-lbp/streaming-player/httpd.conf /etc/httpd/conf/httpd.conf
 sudo cp /etc/sr-lbp/streaming-player/default.vcl /etc/varnish/default.vcl
 sudo cp /etc/sr-lbp/streaming-player/td-agent.conf /etc/td-agent/td-agent.conf
+
+#File permsions
 sudo chmod +x /etc/init.d/streaming-player
+sudo chmod 777 /var/log/httpd/*
+
+#SSL config
+sudo mkdir /opt/tmp
+aws s3 cp s3://sr-ssl-config/player.streamingrocket.co.uk/player.streamingrocket.co.uk/ApacheServer.zip /opt/tmp/ApacheServer.zip
+cd /opt/tmp
+unzip ApacheServer.zip
+
+
+
 sudo service httpd stop
 sudo service varnish stop
 sudo service streaming-player stop
