@@ -10,9 +10,10 @@ sudo chmod +x /etc/init.d/streaming-player
 sudo chmod 777 /var/log/httpd/*
 
 #SSL config
-sudo mkdir /opt/tmp
-aws s3 cp s3://sr-ssl-config/player.streamingrocket.co.uk/player.streamingrocket.co.uk/ApacheServer.zip /opt/tmp/ApacheServer.zip
-cd /opt/tmp
+sudo mkdir /opt/certs
+aws s3 cp s3://sr-ssl-config/player.streamingrocket.co.uk/player.streamingrocket.co.uk/ApacheServer.zip /opt/certs/ApacheServer.zip
+aws s3 cp s3://sr-ssl-config/player.streamingrocket.co.uk/player.streamingrocket.co.uk.key /opt/certs/player.streamingrocket.co.uk.key
+cd /opt/certs
 unzip ApacheServer.zip
 
 
