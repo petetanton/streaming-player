@@ -7,7 +7,7 @@ sudo cp /etc/sr-lbp/streaming-player/td-agent.conf /etc/td-agent/td-agent.conf
 
 #File permsions
 sudo chmod +x /etc/init.d/streaming-player
-sudo chmod 777 /var/log/httpd/*
+sudo chmod 666 /var/log/httpd/*
 
 #SSL config
 sudo mkdir /opt/certs
