@@ -20,6 +20,7 @@ import java.util.Optional;
 
 public class PlayerHttpHandler extends HttpHandler {
 
+    private static final Logger LOG = Logger.getLogger(PlayerHttpHandler.class);
     private final HttpClient srApiClient;
     private final HttpClient manifestClient;
 
@@ -27,8 +28,6 @@ public class PlayerHttpHandler extends HttpHandler {
         this.srApiClient = srApiClient;
         this.manifestClient = manifestClient;
     }
-
-    private static final Logger LOG = Logger.getLogger(PlayerHttpHandler.class);
 
     @Override
     public void service(Request request, Response response) throws Exception {
@@ -80,6 +79,7 @@ public class PlayerHttpHandler extends HttpHandler {
         try {
             streamManifestUrl = stream.getStreamUrls().getStreamTypes().get("hls").getStreamBitrates().get("adaptive").getUrl();
         } catch (NullPointerException e) {
+            LOG.error("HLS adaptive does not exist for stream: " + streamId);
             sendError(response, sb, "HLS adaptive does not exist", HttpStatus.NOT_FOUND_404);
             return;
         }
@@ -133,7 +133,7 @@ public class PlayerHttpHandler extends HttpHandler {
                 "</script>\n");
 
         final Optional<String> size = getOptionalParamFromRequest(request, "size");
-        if (size.isPresent() && size.get().equals("scale")) {
+        if (size.isPresent() && "scale".equals(size.get())) {
             sb.append("<script>\nfunction resizePlayer(){\n" +
                     "\tvar aspectRatio = 9/16;\n" +
                     "\tnewWidth = document.getElementById('player').parentElement.offsetWidth;\n" +

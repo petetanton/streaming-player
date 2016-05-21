@@ -1,25 +1,19 @@
 package com.streaming;
 
 import com.streaming.domain.hls.HLSManifest;
+import com.streaming.http.HttpUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 public class HLSManifestClient {
 
     private static final Logger LOG = Logger.getLogger(HLSManifestClient.class);
-
-    private HLSManifestClient() {
-    }
 
     public static HLSManifest getHLSManifest(String manifestUrl, HttpClient client) throws PlayerException {
         final URI uri;
@@ -48,30 +42,9 @@ public class HLSManifestClient {
             throw new PlayerException(response.getStatusLine().getReasonPhrase());
         }
 
-        InputStream is = null;
-        StringBuilder sb = new StringBuilder();
-        try {
-            is = response.getEntity().getContent();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-
-            String str;
-            while ((str = reader.readLine()) != null) {
-                sb.append(str).append("\n");
-            }
-        } catch (IOException | UnsupportedOperationException e) {
-            LOG.error("Exception thrown whilst getting HLS manifest", e);
-        } finally {
-            if (is != null)
-                try {
-                    is.close();
-                } catch (Exception e) {
-                    LOG.error(e);
-                }
-        }
-
         final HLSManifest manifest;
         try {
-            manifest = HLSManifest.generateHLSManifest(sb.toString());
+            manifest = HLSManifest.generateHLSManifest(HttpUtils.getResponseContentAsString(response));
         } catch (AssertionError e) {
             LOG.error("There was a problem parsing an HLS Manifest", e);
             throw new PlayerException("There was a problem parsing the HLS Manifest", e);

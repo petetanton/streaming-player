@@ -12,15 +12,14 @@ public class HLSManifest {
     public static HLSManifest generateHLSManifest(String input) throws AssertionError {
         final String[] split = input.split("\n");
 
-        assert split[0].equals("#EXTM3U");
-        assert split[1].equals("#EXT-X-VERSION:3");
-        assert split[4].contains("EXT-X-STREAM-INF:PROGRAM");
-        assert split[split.length - 1].equals("#EXT-X-ENDLIST");
+        if (!"#EXTM3U".equals(split[0]) || !"#EXT-X-VERSION:3".equals(split[1]) || !split[4].contains("EXT-X-STREAM-INF:PROGRAM") || !"#EXT-X-ENDLIST".equals(split[split.length - 1])) {
+            throw new AssertionError("There was an issue with the HLS manifest");
+        }
 
         final HLSManifest manifest = new HLSManifest();
 
-        manifest.setTargetDuraton(Integer.parseInt(split[2].substring(split[2].indexOf(":") + 1)));
-        manifest.setMediaSequence(Integer.parseInt(split[3].substring(split[3].indexOf(":") + 1)));
+        manifest.setTargetDuraton(Integer.parseInt(split[2].substring(split[2].indexOf(':') + 1)));
+        manifest.setMediaSequence(Integer.parseInt(split[3].substring(split[3].indexOf(':') + 1)));
 
         List<HLSStreamInf> hlsStreamInfs = new ArrayList<>();
         int noOfRepresentations = (split.length - 4) / 2;
@@ -31,17 +30,8 @@ public class HLSManifest {
         }
 
         manifest.setHlsStreamInfs(hlsStreamInfs);
-        System.out.println(noOfRepresentations);
 
         return manifest;
-    }
-
-    private static String getSubString(String input, String endChar) {
-        return input.substring(0, input.indexOf(endChar));
-    }
-
-    private static int getSubStringAsInt(String input, String endChar) {
-        return Integer.parseInt(input.substring(0, input.indexOf(endChar)));
     }
 
     public List<HLSStreamInf> getHlsStreamInf() {

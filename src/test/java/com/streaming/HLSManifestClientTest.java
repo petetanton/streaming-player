@@ -59,6 +59,37 @@ public class HLSManifestClientTest {
     }
 
     @Test
+    public void itParsesAResponseWithA500Code() throws IOException {
+        when(httpClient.execute(any(HttpGet.class))).thenReturn(response);
+        when(statusLine.getStatusCode()).thenReturn(500);
+        when(statusLine.getReasonPhrase()).thenReturn("A reason");
+        when(response.getStatusLine()).thenReturn(statusLine);
+
+        try {
+            HLSManifestClient.getHLSManifest(NICE_URL, httpClient);
+            fail("Expected an error");
+        } catch (PlayerException e) {
+            assertEquals("A reason", e.getMessage());
+        }
+    }
+
+    @Test
+    public void itThrowsAnErrorWithABadManifestFile() throws IOException {
+        when(httpClient.execute(any(HttpGet.class))).thenReturn(response);
+        when(statusLine.getStatusCode()).thenReturn(200);
+        when(response.getStatusLine()).thenReturn(statusLine);
+        when(response.getEntity()).thenReturn(httpEntity);
+        when(httpEntity.getContent()).thenReturn(new FileInputStream("src/test/resources/bad-manifest.m3u8"));
+
+        try {
+            HLSManifestClient.getHLSManifest(NICE_URL, httpClient);
+            fail("Expected an error");
+        } catch (PlayerException e) {
+            assertEquals("There was a problem parsing the HLS Manifest", e.getMessage());
+        }
+    }
+
+    @Test
     public void itThrowsAnErrorIfABadUrlIsPassedIn() {
         try {
             HLSManifestClient.getHLSManifest("httt)(86tp://hel/lo.com", httpClient);

@@ -1,12 +1,13 @@
 package com.streaming.domain;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class StreamUrls {
 
-    private final HashMap<String, StreamTypes> streamTypes = new HashMap<>();
+    private final Map<String, StreamTypes> streamTypes = new HashMap<>();
 
-    public HashMap<String, StreamTypes> getStreamTypes() {
+    public Map<String, StreamTypes> getStreamTypes() {
         return streamTypes;
     }
 

@@ -5,22 +5,7 @@ public class StreamBitrates {
     private Boolean adaptive;
     private String url;
 
-    public StreamBitrates(int bitrate, Boolean adaptive, String url) {
-        this.bitrate = bitrate;
-        this.adaptive = adaptive;
-        this.url = url;
-    }
-
-    public StreamBitrates(Boolean adaptive, String url) {
-        this.adaptive = adaptive;
-        this.url = url;
-    }
-
-    public StreamBitrates() {
-    }
-
     public int getBitrate() {
-
         return bitrate;
     }
 

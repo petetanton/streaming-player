@@ -8,21 +8,13 @@ public class HLSStreamInf {
     private int height;
     private String manifest;
 
-    public HLSStreamInf(int bandwidth, int height, String manifest, int programId, int width) {
-        this.bandwidth = bandwidth;
-        this.height = height;
-        this.manifest = manifest;
-        this.programId = programId;
-        this.width = width;
-    }
-
     public HLSStreamInf(String line1, String line2) {
         final String[] split = line1.split("=");
 
-        this.programId = Integer.parseInt(split[1].substring(0, split[1].indexOf(",")));
-        this.bandwidth = Integer.parseInt(split[2].substring(0, split[2].indexOf(",")));
-        this.width = Integer.parseInt(split[3].substring(0, split[3].indexOf("x")));
-        this.height = Integer.parseInt(split[3].substring(split[3].indexOf("x") + 1));
+        this.programId = Integer.parseInt(split[1].substring(0, split[1].indexOf(',')));
+        this.bandwidth = Integer.parseInt(split[2].substring(0, split[2].indexOf(',')));
+        this.width = Integer.parseInt(split[3].substring(0, split[3].indexOf('x')));
+        this.height = Integer.parseInt(split[3].substring(split[3].indexOf('x') + 1));
         this.manifest = line2;
     }
 

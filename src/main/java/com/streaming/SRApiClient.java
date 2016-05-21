@@ -12,36 +12,32 @@ import org.apache.log4j.Logger;
 
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 public class SRApiClient {
 
     private static final Logger LOG = Logger.getLogger(SRApiClient.class);
 
-    private SRApiClient() {
-    }
-
-    public static Stream getStream(int streamId, HttpClient client) throws PlayerException, URISyntaxException {
+    public static Stream getStream(int streamId, HttpClient client) throws PlayerException {
         final URIBuilder uriBuilder = new URIBuilder()
                 .setScheme("https")
                 .setHost("api.streamingrocket.com")
                 .setPath("/streams/stream")
                 .setParameter("id", String.valueOf(streamId));
-        final URI uri = uriBuilder.build();
-        System.out.println(uri.toString());
-        HttpGet request = new HttpGet(uri);
-        request.setHeader("Accept", "application/json");
-        request.setHeader("User-Agent", "streaming-player");
 
         final HttpResponse response;
         final InputStream is;
 
         try {
+            final URI uri = uriBuilder.build();
+            HttpGet request = new HttpGet(uri);
+            request.setHeader("Accept", "application/json");
+            request.setHeader("User-Agent", "streaming-player");
+
             response = client.execute(request);
             is = response.getEntity().getContent();
         } catch (Exception e) {
-            LOG.error("An error occurred whist truing to GET from platform api", e);
-            throw new PlayerException("An error occurred whist truing to GET from platform api", e);
+            LOG.error("An error occurred whist trying to GET from platform api", e);
+            throw new PlayerException("An error occurred whist trying to GET from platform api", e);
         }
 
         if (response.getStatusLine().getStatusCode() != 200) {
@@ -57,7 +53,7 @@ public class SRApiClient {
             stream = mapper.readValue(is, Stream.class);
         } catch (Exception e) {
             LOG.error(e);
-            throw new PlayerException(e);
+            throw new PlayerException("An issue occurred whilst parsing the API response", e);
         }
         return stream;
     }
