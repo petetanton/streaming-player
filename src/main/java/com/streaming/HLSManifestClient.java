@@ -18,7 +18,7 @@ public class HLSManifestClient {
 
     private static final Logger LOG = Logger.getLogger(HLSManifestClient.class);
 
-    HLSManifestClient() {
+    private HLSManifestClient() {
     }
 
     public static HLSManifest getHLSManifest(String manifestUrl, HttpClient client) throws PlayerException {

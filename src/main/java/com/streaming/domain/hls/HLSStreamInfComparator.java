@@ -6,7 +6,7 @@ import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 import java.util.function.ToLongFunction;
 
-public class HLSStreamInfComparator implements Comparator<HLSStreamInf> {
+class HLSStreamInfComparator implements Comparator<HLSStreamInf> {
     @Override
     public int compare(HLSStreamInf o1, HLSStreamInf o2) {
         if (o1.getBandwidth() > o2.getBandwidth())

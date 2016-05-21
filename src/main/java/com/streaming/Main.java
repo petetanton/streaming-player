@@ -10,7 +10,7 @@ import java.util.concurrent.CountDownLatch;
 public class Main {
     private static final Logger LOG = Logger.getLogger(Main.class);
 
-    Main() {
+    private Main() {
     }
 
     public static void main(String[] inputArgs) {

@@ -15,7 +15,7 @@ import java.security.NoSuchAlgorithmException;
 public final class HttpUtils {
     private static final Logger LOG = Logger.getLogger(HttpUtils.class);
 
-    HttpUtils() {
+    private HttpUtils() {
     }
 
     public static HttpClient buildClient() throws PlayerException {

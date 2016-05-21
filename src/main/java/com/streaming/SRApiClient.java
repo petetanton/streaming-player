@@ -18,7 +18,7 @@ public class SRApiClient {
 
     private static final Logger LOG = Logger.getLogger(SRApiClient.class);
 
-    SRApiClient() {
+    private SRApiClient() {
     }
 
     public static Stream getStream(int streamId, HttpClient client) throws PlayerException, URISyntaxException {

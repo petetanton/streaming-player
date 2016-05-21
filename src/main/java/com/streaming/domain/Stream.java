@@ -1,6 +1,5 @@
 package com.streaming.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.joda.time.DateTime;
 
 public class Stream {
@@ -193,17 +192,4 @@ public class Stream {
         this.thumbnailUrl = thumbnailUrl;
     }
 
-    @JsonIgnore
-    public StreamMeta getStreamMeta() {
-        StreamMeta streamMeta = new StreamMeta();
-        streamMeta.setName(this.getStreamTitle());
-        streamMeta.setDescription(this.getStreamDescription());
-        streamMeta.setThumbnailUrl(this.getThumbnailUrl());
-//        streamMeta.setUploadDate();
-//        streamMeta.setDuration();
-//        streamMeta.setContentUrl();   not supported for streaming
-        streamMeta.setEmbedUrl(this.getEmbedUrl());
-        streamMeta.setInteractionCount(this.interactionCount);
-        return streamMeta;
-    }
 }

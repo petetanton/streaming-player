@@ -48,7 +48,7 @@ public class HLSManifest {
         return hlsStreamInf;
     }
 
-    public void setHlsStreamInfs(List<HLSStreamInf> hlsStreamInf) {
+    private void setHlsStreamInfs(List<HLSStreamInf> hlsStreamInf) {
         this.hlsStreamInf = hlsStreamInf;
     }
 
@@ -56,7 +56,7 @@ public class HLSManifest {
         return mediaSequence;
     }
 
-    public void setMediaSequence(int mediaSequence) {
+    private void setMediaSequence(int mediaSequence) {
         this.mediaSequence = mediaSequence;
     }
 
@@ -64,7 +64,7 @@ public class HLSManifest {
         return targetDuraton;
     }
 
-    public void setTargetDuraton(int targetDuraton) {
+    private void setTargetDuraton(int targetDuraton) {
         this.targetDuraton = targetDuraton;
     }
 
