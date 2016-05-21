@@ -1,4 +1,4 @@
-package com.streaming.domain.hls;
+package com.streaming.domain;
 
 import java.util.HashMap;
 

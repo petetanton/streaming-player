@@ -6,7 +6,7 @@ import com.streaming.HLSManifestClient;
 import com.streaming.PlayerException;
 import com.streaming.SRApiClient;
 import com.streaming.domain.hls.HLSManifest;
-import com.streaming.domain.hls.Stream;
+import com.streaming.domain.Stream;
 import com.streaming.http.HttpUtils;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.log4j.Logger;

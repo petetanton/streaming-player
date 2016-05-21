@@ -1,7 +1,6 @@
 package com.streaming;
 
-import com.streaming.domain.HLSManifest;
-import com.streaming.http.HttpUtils;
+import com.streaming.domain.hls.HLSManifest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -14,9 +13,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 
 public class HLSManifestClient {
 
@@ -25,12 +21,8 @@ public class HLSManifestClient {
     public static HLSManifest getHLSManifest(String manifestUrl, HttpClient client) throws PlayerException {
         final URI uri;
         try {
-            client = HttpUtils.buildClient();
             final URIBuilder uriBuilder = new URIBuilder(manifestUrl);
             uri = uriBuilder.build();
-        } catch (KeyStoreException | NoSuchAlgorithmException | KeyManagementException e) {
-            LOG.error("An error occurred with the SSL implementation", e);
-            throw new PlayerException(e);
         } catch (URISyntaxException e) {
             LOG.error("An error occurred whilst building the manifest URL", e);
             throw new PlayerException(e);
@@ -68,7 +60,11 @@ public class HLSManifestClient {
             LOG.error("Exception thrown whilst getting HLS manifest", e);
         } finally {
             if (is != null)
-                try { is.close(); } catch (Throwable e) { LOG.error(e); }
+                try {
+                    is.close();
+                } catch (Throwable e) {
+                    LOG.error(e);
+                }
         }
 
         final HLSManifest manifest;
