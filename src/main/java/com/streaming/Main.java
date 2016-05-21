@@ -1,9 +1,13 @@
 package com.streaming;
 
 import com.streaming.handler.PlayerHttpHandler;
+import com.streaming.http.HttpUtils;
 import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
 
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
 
 public class Main {
@@ -23,7 +27,11 @@ public class Main {
 
     private static void start() {
         HttpServer server = HttpServer.createSimpleServer();
-        server.getServerConfiguration().addHttpHandler(new PlayerHttpHandler(), "/player");
+        try {
+            server.getServerConfiguration().addHttpHandler(new PlayerHttpHandler(HttpUtils.buildClient(), HttpUtils.buildClient()), "/player");
+        } catch (KeyStoreException | NoSuchAlgorithmException | KeyManagementException e) {
+            LOG.error("Failed to add PlayerHttpHandler", e);
+        }
 
         try {
             server.start();

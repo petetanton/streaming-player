@@ -5,10 +5,9 @@ import com.streaming.CacheControl;
 import com.streaming.HLSManifestClient;
 import com.streaming.PlayerException;
 import com.streaming.SRApiClient;
-import com.streaming.domain.hls.HLSManifest;
 import com.streaming.domain.Stream;
-import com.streaming.http.HttpUtils;
-import org.apache.http.impl.client.HttpClients;
+import com.streaming.domain.hls.HLSManifest;
+import org.apache.http.client.HttpClient;
 import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpHandler;
 import org.glassfish.grizzly.http.server.Request;
@@ -17,15 +16,40 @@ import org.glassfish.grizzly.http.util.HttpStatus;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 public class PlayerHttpHandler extends HttpHandler {
 
+    private final HttpClient srApiClient;
+    private final HttpClient manifestClient;
+
+    public PlayerHttpHandler(HttpClient srApiClient, HttpClient manifestClient) {
+        this.srApiClient = srApiClient;
+        this.manifestClient = manifestClient;
+    }
+
     private static final Logger LOG = Logger.getLogger(PlayerHttpHandler.class);
+
     @Override
     public void service(Request request, Response response) throws Exception {
         response.setHeader("Content-Type", "text/html");
         response.setHeader("Access-Control-Allow-Origin", "*");
+
         StringBuilder sb = new StringBuilder();
+
+        final Stream stream;
+        final int streamId = getRequiredIntFromParam(request, response, sb, "id");
+        stream = SRApiClient.getStream(streamId, this.srApiClient);
+
+
+        response.setHeader("Cache-Control", CacheControl.getCacheHeaderForPlayer(stream));
+
+        if (stream == null) {
+            sendError(response, sb, "Stream does not exist", HttpStatus.NOT_FOUND_404);
+            return;
+        }
+
+
         sb.append("<!DOCTYPE html>\n" +
                 "<!--[if lt IE 7]>      <html lang=\"en\" class=\"no-js lt-ie9 lt-ie8 lt-ie7\"> <![endif]-->\n" +
                 "<!--[if IE 7]>         <html lang=\"en\" class=\"no-js lt-ie9 lt-ie8 ie7\"> <![endif]-->\n" +
@@ -34,32 +58,24 @@ public class PlayerHttpHandler extends HttpHandler {
                 "<!--[if !IE]><!--> <html lang=\"en\" class=\"no-js\">             <!--<![endif]-->\n");
         sb.append("<head>\n");
         sb.append("<meta charset=\"utf-8\">\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n");
+
+        if (stream.getStatusAsInt() < 4) {
+            final int refresh;
+            if (stream.getStatusAsInt() < 3) refresh = 60;
+            else refresh = 15;
+            sb.append("<META HTTP-EQUIV=\"refresh\" CONTENT=\"").append(refresh).append("\">");
+            sb.append("</head>");
+            sendError(response, sb, "Stream is not yet live, please try again shortly", HttpStatus.NOT_FOUND_404);
+            return;
+        }
+
         sb.append("<script type=\"text/javascript\" src=\"https://s3-eu-west-1.amazonaws.com/sr-static-hosting/player/src/clappr/0-2-49/clappr.min.js\"></script>\n");
         sb.append("<script type=\"text/javascript\" src=\"https://s3-eu-west-1.amazonaws.com/sr-static-hosting/player/src/clappr-level-selector/0-1-10/level-selector.min.js\"></script>\n");
         sb.append("</head>\n");
         sb.append("<body>\n");
 
-        final String streamId = request.getParameter("id");
-        final Stream stream;
         final String streamManifestUrl;
 
-
-        if (StringUtils.isNullOrEmpty(streamId)) {
-            sendError(response, sb, "Please request player with a stream id set", HttpStatus.BAD_REQUEST_400);
-            return;
-        }
-
-        try {
-            stream = SRApiClient.getStream(Integer.parseInt(streamId), HttpUtils.buildClient());
-        } catch (NumberFormatException e) {
-            sendError(response, sb, "Please set id to a valid number", HttpStatus.BAD_REQUEST_400);
-            return;
-        }
-
-        if (stream == null) {
-            sendError(response, sb, "Stream does not exist", HttpStatus.NOT_FOUND_404);
-            return;
-        }
 
         try {
             streamManifestUrl = stream.getStreamUrls().getStreamTypes().get("hls").getStreamBitrates().get("adaptive").getUrl();
@@ -69,12 +85,17 @@ public class PlayerHttpHandler extends HttpHandler {
         }
 
 
-
         sb.append("<div id=\"player\" style=\"width:640px; height=360px;\"></div>\n");
         sb.append("<script>\n");
         sb.append("var player = new Clappr.Player({source: \"");
         sb.append(streamManifestUrl);
-        sb.append("\", maxBufferLength:240, useDvrControls: true, parentId: \"#player\", mediacontrol: {seekbar: \"#66B2FF\", buttons: \"#ffffff\"}, gaAccount: 'UA-73120346-1',\n" +
+        sb.append("\"");
+
+        if (!StringUtils.isNullOrEmpty(stream.getThumbnailUrl())) {
+            sb.append(", poster: '").append(stream.getThumbnailUrl()).append("'");
+        }
+
+        sb.append(", maxBufferLength:240, useDvrControls: true, parentId: \"#player\", mediacontrol: {seekbar: \"#66B2FF\", buttons: \"#ffffff\"}, gaAccount: 'UA-73120346-1',\n" +
                 "    gaTrackerName: 'streamingrocket-player-");
         sb.append(stream.getStreamId());
         sb.append("', plugins: {");
@@ -83,7 +104,7 @@ public class PlayerHttpHandler extends HttpHandler {
 
         final HLSManifest hlsManifest;
         try {
-            hlsManifest = HLSManifestClient.getHLSManifest(streamManifestUrl, HttpUtils.buildClient());
+            hlsManifest = HLSManifestClient.getHLSManifest(streamManifestUrl, manifestClient);
             sb.append(hlsManifest.generateClapprSelectorConfig());
         } catch (PlayerException e) {
             LOG.error("Could not parse the Manifest", e);
@@ -111,20 +132,23 @@ public class PlayerHttpHandler extends HttpHandler {
                 "\n" +
                 "</script>\n");
 
-        sb.append("<script>\nfunction resizePlayer(){\n" +
-                "\tvar aspectRatio = 9/16;\n" +
-                "\tnewWidth = document.getElementById('player').parentElement.offsetWidth;\n" +
-                "\tnewHeight = 2 * Math.round(newWidth * aspectRatio/2);\n" +
-                "\tplayer.resize({width: newWidth, height: newHeight});\n" +
-                "}\n" +
-                "\n" +
-                "resizePlayer();\n" +
-                "window.onresize = resizePlayer;\n</script>\n");
+        final Optional<String> size = getOptionalParamFromRequest(request, "size");
+        if (size.isPresent() && size.get().equals("scale")) {
+            sb.append("<script>\nfunction resizePlayer(){\n" +
+                    "\tvar aspectRatio = 9/16;\n" +
+                    "\tnewWidth = document.getElementById('player').parentElement.offsetWidth;\n" +
+                    "\tnewHeight = 2 * Math.round(newWidth * aspectRatio/2);\n" +
+                    "\tplayer.resize({width: newWidth, height: newHeight});\n" +
+                    "}\n" +
+                    "\n" +
+                    "resizePlayer();\n" +
+                    "window.onresize = resizePlayer;\n</script>\n");
+        }
+
 
         sb.append("</body>");
         sb.append("</html>");
 
-        response.setHeader("Cache-Control", CacheControl.getDefaultCacheHeader());
         response.setHeader("X-Manifest-Location", streamManifestUrl);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.getWriter().write(sb.toString());
@@ -136,5 +160,31 @@ public class PlayerHttpHandler extends HttpHandler {
         sb.append("</html>");
         response.getWriter().write(sb.toString());
         response.setStatus(status);
+    }
+
+    private Integer getRequiredIntFromParam(final Request request, final Response response, StringBuilder sb, final String paramName) throws IOException {
+        Integer param = null;
+        try {
+            param = Integer.parseInt(getRequiredParamFromRequest(request, response, sb, paramName));
+        } catch (NumberFormatException e) {
+            sendError(response, sb, "Please set " + paramName + " to a valid number", HttpStatus.BAD_REQUEST_400);
+        }
+        return param;
+    }
+
+    private String getRequiredParamFromRequest(final Request request, final Response response, StringBuilder sb, final String paramName) throws IOException {
+        final String param = request.getParameter(paramName);
+        if (StringUtils.isNullOrEmpty(param)) {
+            sendError(response, sb, "Please request player with a " + param + " set", HttpStatus.BAD_REQUEST_400);
+        }
+        return param;
+    }
+
+    private Optional<String> getOptionalParamFromRequest(final Request request, final String paramName) {
+        final String param = request.getParameter(paramName);
+        if (StringUtils.isNullOrEmpty(param)) {
+            return Optional.empty();
+        }
+        return Optional.of(param);
     }
 }

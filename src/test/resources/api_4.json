@@ -1,0 +1,44 @@
+{
+  "streamId": 4,
+  "streamTitle": "Testing Stream",
+  "streamType": "live",
+  "streamDescription": "testing LIVE LIVE stream testing",
+  "streamUrls": {
+    "streamTypes": {
+      "hls": {
+        "streamBitrates": {
+          "adaptive": {
+            "bitrate": 0,
+            "url": "https://d3jedn0s4r9s07.cloudfront.net/hls/123456789-1/testpattern-master.m3u8",
+            "adaptive": true
+          },
+          "1200k": {
+            "bitrate": 1200,
+            "url": "http://test.streamingrocket.com/4/1200k.m3u8",
+            "adaptive": false
+          },
+          "test": {
+            "bitrate": 0,
+            "url": "https://s3-eu-west-1.amazonaws.com/sr-vod-service/hls/256202/testpattern-master.m3u8",
+            "adaptive": true
+          },
+          "testvod": {
+            "bitrate": 0,
+            "url": "https://d3jedn0s4r9s07.cloudfront.net/hls/123456789-3/ScotDoc-master.m3u8",
+            "adaptive": true
+          }
+        }
+      }
+    }
+  },
+  "dvrEnabled": false,
+  "organisation": "Streaming Rocket",
+  "security": 1,
+  "startTime": "2016-01-21T13:02:04+0000",
+  "thumbnailUrl": "https://sr-public-images.s3-eu-west-1.amazonaws.com/streaming-rocket/2016/02/14/flying-honey-bee-1330723.jpg",
+  "embedUrl": "http://www.streamingrocket.com/stream1/embed",
+  "interactionCount": 1,
+  "originId": 3,
+  "statusAsInt": 4,
+  "statusAsString": "live"
+}
