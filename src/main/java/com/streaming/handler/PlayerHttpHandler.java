@@ -50,7 +50,7 @@ public class PlayerHttpHandler extends HttpHandler {
         }
 
         try {
-            stream = SRApiClient.getStream(Integer.parseInt(streamId), HttpClients.custom().build());
+            stream = SRApiClient.getStream(Integer.parseInt(streamId), HttpUtils.buildClient());
         } catch (NumberFormatException e) {
             sendError(response, sb, "Please set id to a valid number", HttpStatus.BAD_REQUEST_400);
             return;
