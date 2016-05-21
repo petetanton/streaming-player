@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.streaming.domain.Stream;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.log4j.Logger;
 
 import java.io.InputStream;
@@ -17,7 +17,10 @@ public class SRApiClient {
 
     private static final Logger LOG = Logger.getLogger(SRApiClient.class);
 
-    public static Stream getStream(int streamId, HttpClient client) throws Exception {
+    SRApiClient() {
+    }
+
+    public static Stream getStream(int streamId, CloseableHttpClient client) throws Exception {
         final URIBuilder uriBuilder = new URIBuilder()
                 .setScheme("https")
                 .setHost("api.streamingrocket.com")

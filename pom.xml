@@ -63,7 +63,7 @@
     </dependencies>
 
     <build>
-        <finalName>streaming-player-${version}</finalName>
+        <finalName>streaming-player-${project.version}</finalName>
 
         <plugins>
             <plugin>

@@ -8,6 +8,7 @@ import com.streaming.SRApiClient;
 import com.streaming.domain.HLSManifest;
 import com.streaming.domain.Stream;
 import com.streaming.http.HttpUtils;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpHandler;
 import org.glassfish.grizzly.http.server.Request;
@@ -16,9 +17,6 @@ import org.glassfish.grizzly.http.util.HttpStatus;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 
 public class PlayerHttpHandler extends HttpHandler {
 
@@ -52,7 +50,7 @@ public class PlayerHttpHandler extends HttpHandler {
         }
 
         try {
-            stream = SRApiClient.getStream(Integer.parseInt(streamId), HttpUtils.buildClient());
+            stream = SRApiClient.getStream(Integer.parseInt(streamId), HttpClients.custom().build());
         } catch (NumberFormatException e) {
             sendError(response, sb, "Please set id to a valid number", HttpStatus.BAD_REQUEST_400);
             return;
@@ -126,7 +124,7 @@ public class PlayerHttpHandler extends HttpHandler {
         sb.append("</body>");
         sb.append("</html>");
 
-        response.setHeader("Cache-Control", CacheControl.calculateCacheHeader(stream));
+        response.setHeader("Cache-Control", CacheControl.getDefaultCacheHeader());
         response.setHeader("X-Manifest-Location", streamManifestUrl);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.getWriter().write(sb.toString());
