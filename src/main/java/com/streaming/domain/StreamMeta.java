@@ -1,6 +1,5 @@
 package com.streaming.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -24,12 +23,8 @@ public class StreamMeta {
         this.contentUrl = contentUrl;
     }
 
-    public String getDescription() throws Exception {
-        if (this.description == null) {
-            throw new Exception("Description cannot be null");
-        } else {
-            return description;
-        }
+    public String getDescription() {
+        return description;
     }
 
     public void setDescription(String description) {
@@ -78,24 +73,16 @@ public class StreamMeta {
         this.interactionCount = interactionCount;
     }
 
-    public String getName() throws Exception {
-        if (this.name == null) {
-            throw new Exception("Name cannot be null");
-        } else {
-            return name;
-        }
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getThumbnailUrl() throws Exception {
-        if (this.thumbnailUrl == null) {
-            throw new Exception("ThumbnailUrl cannot be null");
-        } else {
-            return thumbnailUrl;
-        }
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
     }
 
     public void setThumbnailUrl(String thumbnailUrl) {
@@ -119,51 +106,4 @@ public class StreamMeta {
         }
     }
 
-    @JsonProperty("@context")
-    public String getContext() {
-        return "http://schema.org";
-    }
-
-    @JsonProperty("@type")
-    public String getType() {
-        return "VideoObject";
-    }
-
-    public String buildJavascript() throws Exception {
-        String output = "";//"{";
-        output += "<script type=\"application/ld+json\">{";
-        output += "\"@context\": \"http://schema.org\",";
-        output += "\"@type\": \"VideoObject\",";
-        output += "\"name\": \"" + this.getName() + "\",";
-        output += "\"description\": \"" + this.getDescription() + "\",";
-        output += "\"thumbnailUrl\": \"" + this.getThumbnailUrl() + "\"";
-        if (this.getUploadDate() != null)
-            output += ",\"uploadDate\": \"" + this.getUploadDateAsISOString() + "\"";
-        if (this.getDuration() != null)
-            output += ",\"duration\": \"" + this.getDurationAsISOString() + "\"";
-        if (this.getContentUrl() != null && !this.getContentUrl().equals(""))
-            output += ",\"contentUrl\": \"" + this.getContentUrl() + "\"";
-        if (this.getEmbedUrl() != null && !this.getEmbedUrl().equals(""))
-            output += ",\"embedUrl\": \"" + this.getEmbedUrl() + "\"";
-        if (this.getInteractionCount() > 0)
-            output += ",\"interactionCount\": \"" + this.getInteractionCount() + "\"";
-        output += "}</script>";
-        return output;
-    }
-
-
-    //<script type="application/ld+json">
-//        {
-//        "@context": "http://schema.org",
-//        "@type": "VideoObject",
-//        "name": "Title",  (required)
-//        "description": "Video description",
-//        "thumbnailUrl": "thumbnail.jpg",  (required)
-//        "uploadDate": "2015-02-05T08:00:00+08:00",    (required)
-//        "duration": "PT1M33S",
-//        "contentUrl": "http://www.example.com/video123.flv",  (not supported for streaming)
-//        "embedUrl": "http://www.example.com/videoplayer.swf?video=123",
-//        "interactionCount": "2347"
-//        }
-//</script>
 }

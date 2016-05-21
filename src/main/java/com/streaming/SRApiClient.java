@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 public class SRApiClient {
 
@@ -20,7 +21,7 @@ public class SRApiClient {
     SRApiClient() {
     }
 
-    public static Stream getStream(int streamId, HttpClient client) throws Exception {
+    public static Stream getStream(int streamId, HttpClient client) throws PlayerException, URISyntaxException {
         final URIBuilder uriBuilder = new URIBuilder()
                 .setScheme("https")
                 .setHost("api.streamingrocket.com")
@@ -33,18 +34,21 @@ public class SRApiClient {
         request.setHeader("User-Agent", "streaming-player");
 
         final HttpResponse response;
+        final InputStream is;
+
         try {
             response = client.execute(request);
+            is = response.getEntity().getContent();
         } catch (Exception e) {
             LOG.error("An error occurred whist truing to GET from platform api", e);
-            throw new Exception("An error occurred whist truing to GET from platform api", e);
+            throw new PlayerException("An error occurred whist truing to GET from platform api", e);
         }
 
         if (response.getStatusLine().getStatusCode() != 200) {
             LOG.error("Got a non 200 response from platform api, response was [" + response.getStatusLine().getStatusCode() + "] " + response.getStatusLine().getReasonPhrase());
-            throw new Exception(response.getStatusLine().getReasonPhrase());
+            throw new PlayerException(response.getStatusLine().getReasonPhrase());
         }
-        final InputStream is = response.getEntity().getContent();
+
         final Stream stream;
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -53,7 +57,7 @@ public class SRApiClient {
             stream = mapper.readValue(is, Stream.class);
         } catch (Exception e) {
             LOG.error(e);
-            throw new Exception(e);
+            throw new PlayerException(e);
         }
         return stream;
     }
