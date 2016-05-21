@@ -5,21 +5,19 @@ import com.streaming.http.HttpUtils;
 import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;
 
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
 
 public class Main {
-
     private static final Logger LOG = Logger.getLogger(Main.class);
 
+    Main() {
+    }
 
     public static void main(String[] inputArgs) {
         try {
             start();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            LOG.error(e);
             System.exit(2);
         }
 
@@ -29,7 +27,7 @@ public class Main {
         HttpServer server = HttpServer.createSimpleServer();
         try {
             server.getServerConfiguration().addHttpHandler(new PlayerHttpHandler(HttpUtils.buildClient(), HttpUtils.buildClient()), "/player");
-        } catch (KeyStoreException | NoSuchAlgorithmException | KeyManagementException e) {
+        } catch (PlayerException e) {
             LOG.error("Failed to add PlayerHttpHandler", e);
         }
 

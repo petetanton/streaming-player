@@ -70,5 +70,6 @@ public class PlayerHttpHandlerTest {
     public void blach() throws Exception {
         when(request.getParameter("id")).thenReturn("4");
         underTest.service(request, response);
+
     }
 }

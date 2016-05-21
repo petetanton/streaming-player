@@ -18,6 +18,9 @@ public class HLSManifestClient {
 
     private static final Logger LOG = Logger.getLogger(HLSManifestClient.class);
 
+    HLSManifestClient() {
+    }
+
     public static HLSManifest getHLSManifest(String manifestUrl, HttpClient client) throws PlayerException {
         final URI uri;
         try {
@@ -27,7 +30,7 @@ public class HLSManifestClient {
             LOG.error("An error occurred whilst building the manifest URL", e);
             throw new PlayerException(e);
         }
-        System.out.println(uri.toString());
+        LOG.info("requesting: " + uri.toString());
         HttpGet request = new HttpGet(uri);
         request.setHeader("Accept", "*/*");
         request.setHeader("User-Agent", "streaming-player");
@@ -56,13 +59,12 @@ public class HLSManifestClient {
                 sb.append(str).append("\n");
             }
         } catch (IOException | UnsupportedOperationException e) {
-            e.printStackTrace();
             LOG.error("Exception thrown whilst getting HLS manifest", e);
         } finally {
             if (is != null)
                 try {
                     is.close();
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     LOG.error(e);
                 }
         }
