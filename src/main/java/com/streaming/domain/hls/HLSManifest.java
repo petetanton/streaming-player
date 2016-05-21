@@ -1,4 +1,4 @@
-package com.streaming.domain;
+package com.streaming.domain.hls;
 
 import java.util.ArrayList;
 import java.util.List;

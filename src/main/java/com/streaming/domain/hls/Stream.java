@@ -1,4 +1,4 @@
-package com.streaming.domain;
+package com.streaming.domain.hls;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.joda.time.DateTime;

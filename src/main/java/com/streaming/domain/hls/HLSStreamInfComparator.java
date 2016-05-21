@@ -1,4 +1,4 @@
-package com.streaming.domain;
+package com.streaming.domain.hls;
 
 import java.util.Comparator;
 import java.util.function.Function;

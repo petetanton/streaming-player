@@ -1,4 +1,4 @@
-package com.streaming.domain;
+package com.streaming.domain.hls;
 
 public class StreamBitrates {
     private int bitrate;
