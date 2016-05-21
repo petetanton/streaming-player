@@ -1,16 +1,32 @@
 package com.streaming.domain;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class StreamTypes {
-    private final Map<String, StreamBitrates> streamBitrates = new HashMap<>();
 
-    public void addStreamBitrate(String name, StreamBitrates streamBitrate) {
-        streamBitrates.put(name, streamBitrate);
+    private String url;
+    private Integer bitrate;
+    private Boolean isAdaptive;
+
+    public Integer getBitrate() {
+        return bitrate;
     }
 
-    public Map<String, StreamBitrates> getStreamBitrates() {
-        return streamBitrates;
+    public void setBitrate(Integer bitrate) {
+        this.bitrate = bitrate;
+    }
+
+    public Boolean isAdaptive() {
+        return isAdaptive;
+    }
+
+    public void setIsAdaptive(Boolean isAdaptive) {
+        this.isAdaptive = isAdaptive;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

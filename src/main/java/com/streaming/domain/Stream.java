@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 
 public class Stream {
 
-    private int statusAsInt;
+    private int status;
     private int streamId;
     private String streamTitle;
     private String streamType;
@@ -70,16 +70,16 @@ public class Stream {
         this.startTime = startTime;
     }
 
-    public int getStatusAsInt() {
-        return statusAsInt;
+    public int getStatus() {
+        return status;
     }
 
-    public void setStatusAsInt(int statusAsInt) {
-        this.statusAsInt = statusAsInt;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public String getStatusAsString() {
-        switch (this.statusAsInt) {
+        switch (this.status) {
             case 1:
                 return "awaiting scheduler";
             case 2:
@@ -95,7 +95,7 @@ public class Stream {
             case 7:
                 return "vod";
             default:
-                return "statusAsInt not defined";
+                return "status not defined";
         }
     }
 

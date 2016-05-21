@@ -14,7 +14,7 @@ public class CacheControl {
     }
 
     public static String getCacheHeaderForPlayer(Stream stream) {
-        if (stream.getStatusAsInt() >= 3) {
+        if (stream.getStatus() >= 3) {
             return getDefaultCacheHeader();
         } else {
             return "public, max-age=120, s-maxage=60";

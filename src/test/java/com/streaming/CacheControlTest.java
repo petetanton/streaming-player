@@ -26,7 +26,7 @@ public class CacheControlTest {
     @Test
     public void testCacheIsSetForPreLiveStreams() {
         for (int i = 1; i < 8; i++) {
-            when(stream.getStatusAsInt()).thenReturn(i);
+            when(stream.getStatus()).thenReturn(i);
             verifyCacheForStatus(i, CacheControl.getCacheHeaderForPlayer(stream));
         }
     }

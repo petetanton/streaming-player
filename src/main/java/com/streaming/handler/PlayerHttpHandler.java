@@ -58,9 +58,9 @@ public class PlayerHttpHandler extends HttpHandler {
         sb.append("<head>\n");
         sb.append("<meta charset=\"utf-8\">\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n");
 
-        if (stream.getStatusAsInt() < 4) {
+        if (stream.getStatus() < 4) {
             final int refresh;
-            if (stream.getStatusAsInt() < 3) refresh = 60;
+            if (stream.getStatus() < 3) refresh = 60;
             else refresh = 15;
             sb.append("<META HTTP-EQUIV=\"refresh\" CONTENT=\"").append(refresh).append("\">");
             sb.append("</head>");
@@ -77,7 +77,7 @@ public class PlayerHttpHandler extends HttpHandler {
 
 
         try {
-            streamManifestUrl = stream.getStreamUrls().getStreamTypes().get("hls").getStreamBitrates().get("adaptive").getUrl();
+            streamManifestUrl = stream.getStreamUrls().getHls().get("adaptive").getUrl();
         } catch (NullPointerException e) {
             LOG.error("HLS adaptive does not exist for stream: " + streamId);
             sendError(response, sb, "HLS adaptive does not exist", HttpStatus.NOT_FOUND_404);

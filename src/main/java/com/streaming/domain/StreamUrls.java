@@ -5,14 +5,15 @@ import java.util.Map;
 
 public class StreamUrls {
 
-    private final Map<String, StreamTypes> streamTypes = new HashMap<>();
+    private final Map<String, StreamTypes> hls = new HashMap<>();
+    private final Map<String, StreamTypes> dash = new HashMap<>();
 
-    public Map<String, StreamTypes> getStreamTypes() {
-        return streamTypes;
+    public Map<String, StreamTypes> getDash() {
+        return dash;
     }
 
-    public void addStreamType(String name, StreamTypes streamType) {
-        streamTypes.put(name, streamType);
-
+    public Map<String, StreamTypes> getHls() {
+        return hls;
     }
+
 }
