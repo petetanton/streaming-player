@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class HLSStreamInfComparatorTest {
 
-    private HLSStreamInfComparator underTest = new HLSStreamInfComparator();
+    private final HLSStreamInfComparator underTest = new HLSStreamInfComparator();
     @Mock
     private HLSStreamInf s1;
     @Mock

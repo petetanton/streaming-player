@@ -7,6 +7,7 @@ import com.streaming.PlayerException;
 import com.streaming.SRApiClient;
 import com.streaming.domain.Stream;
 import com.streaming.domain.hls.HLSManifest;
+import com.streaming.player.PlayerJSGenerator;
 import org.apache.http.client.HttpClient;
 import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpHandler;
@@ -50,11 +51,11 @@ public class PlayerHttpHandler extends HttpHandler {
 
 
         sb.append("<!DOCTYPE html>\n" +
-                "<!--[if lt IE 7]>      <html lang=\"en\" class=\"no-js lt-ie9 lt-ie8 lt-ie7\"> <![endif]-->\n" +
-                "<!--[if IE 7]>         <html lang=\"en\" class=\"no-js lt-ie9 lt-ie8 ie7\"> <![endif]-->\n" +
-                "<!--[if IE 8]>         <html lang=\"en\" class=\"no-js lt-ie9 ie8\"> <![endif]-->\n" +
-                "<!--[if IE 9]>         <html lang=\"en\" class=\"no-js lt-ie10 ie9\"> <![endif]-->\n" +
-                "<!--[if !IE]><!--> <html lang=\"en\" class=\"no-js\">             <!--<![endif]-->\n");
+                "<!--[if lt IE 7]>      <html lang=\"en\" class=\"lt-ie9 lt-ie8 lt-ie7\"> <![endif]-->\n" +
+                "<!--[if IE 7]>         <html lang=\"en\" class=\"lt-ie9 lt-ie8 ie7\"> <![endif]-->\n" +
+                "<!--[if IE 8]>         <html lang=\"en\" class=\"lt-ie9 ie8\"> <![endif]-->\n" +
+                "<!--[if IE 9]>         <html lang=\"en\" class=\"lt-ie10 ie9\"> <![endif]-->\n" +
+                "<!--[if !IE]><!--> <html lang=\"en\">             <!--<![endif]-->\n");
         sb.append("<head>\n");
         sb.append("<meta charset=\"utf-8\">\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n");
 
@@ -111,7 +112,8 @@ public class PlayerHttpHandler extends HttpHandler {
         }
 
         sb.append("});");
-        sb.append("</script>");
+        sb.append("</script>\n");
+        sb.append(PlayerJSGenerator.generateStatsScript(streamId));
         sb.append("<script>\n" +
                 "\n" +
                 "\n" +
