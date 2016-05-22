@@ -80,7 +80,7 @@ public class PlayerHttpHandler extends HttpHandler {
         try {
             streamManifestUrl = stream.getStreamUrls().getHls().get("adaptive").getUrl();
         } catch (NullPointerException e) {
-            LOG.error("HLS adaptive does not exist for stream: " + streamId);
+            LOG.error("HLS adaptive does not exist for stream: " + streamId, e);
             sendError(response, sb, "HLS adaptive does not exist", HttpStatus.NOT_FOUND_404);
             return;
         }

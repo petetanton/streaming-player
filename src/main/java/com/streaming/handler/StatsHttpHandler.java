@@ -46,7 +46,7 @@ public class StatsHttpHandler extends HttpHandler {
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             mapper.registerModule(new JodaModule());
 
-            if (request.getHeader(EVENT_TYPE).equalsIgnoreCase("CONTAINER_BITRATE")) {
+            if ("CONTAINER_BITRATE" .equalsIgnoreCase(request.getHeader(EVENT_TYPE))) {
                 final ContainerBitrateEvent containerBitrateEvent;
                 containerBitrateEvent = mapper.readValue(is, ContainerBitrateEvent.class);
 
