@@ -1,6 +1,5 @@
 package com.streaming;
 
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
@@ -31,7 +30,7 @@ public class Main {
 
     private static void start() {
 
-        final AmazonDynamoDBClient amazonDynamoDBClient = new AmazonDynamoDBClient(new ProfileCredentialsProvider("pete-work"));
+        final AmazonDynamoDBClient amazonDynamoDBClient = new AmazonDynamoDBClient();
         amazonDynamoDBClient.setRegion(Region.getRegion(Regions.EU_WEST_1));
         final DynamoDao dao = new DynamoDao(amazonDynamoDBClient);
 
